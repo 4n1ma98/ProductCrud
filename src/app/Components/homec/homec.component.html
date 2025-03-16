@@ -1,0 +1,9 @@
+<div class="box">
+  <div class="listc p-5">
+    <app-listc (update)="update = true"></app-listc>
+  </div>
+  <div class="actionc p-5">
+    <app-registrationc *ngIf="!update"></app-registrationc>
+    <app-updatec *ngIf="update" (update)="update = false"></app-updatec>
+  </div>
+</div>

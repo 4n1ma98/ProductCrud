@@ -3,16 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomecComponent } from './Components/homec/homec.component';
+import { ListcComponent } from './Components/listc/listc.component';
+import { RegistrationcComponent } from './Components/registrationc/registrationc.component';
+import { UpdatecComponent } from './Components/updatec/updatec.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomecComponent,
+    ListcComponent,
+    RegistrationcComponent,
+    UpdatecComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
