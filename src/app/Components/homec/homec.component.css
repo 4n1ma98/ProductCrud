@@ -1,5 +1,6 @@
 .box {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
@@ -9,4 +10,11 @@
 
 .actionc {
   width: 40%;
+}
+
+@media (max-width: 1100px) {
+  .listc,
+  .actionc {
+    width: 100%; /* De esta manera ambos componentes ocupan el 100% del ancho cuando llegan a el ancho máximo */
+  }
 }

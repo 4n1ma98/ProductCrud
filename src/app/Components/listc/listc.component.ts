@@ -31,10 +31,22 @@ export class ListcComponent implements OnInit {
   }
 
   read(): void {
-    this.service.readProducts().subscribe((products) => {
-      this.products = products.additionalData;
-      this.originalList = this.products;
-      this.calculatePages();
+    this.service.readProducts().subscribe((products) => {});
+
+    this.service.readProducts().subscribe({
+      next: (res: any) => {
+        this.products = res.additionalData;
+        this.originalList = this.products;
+        this.calculatePages();
+      },
+      error: (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Hubo un error al consumir el servicio.',
+        });
+      },
+      complete: () => {},
     });
   }
 
@@ -89,7 +101,7 @@ export class ListcComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: 'Hubo un error al consumir el servicio',
+              text: 'Hubo un error al consumir el servicio.',
             });
           },
           complete: () => {},

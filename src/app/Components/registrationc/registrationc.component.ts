@@ -64,7 +64,7 @@ export class RegistrationcComponent {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Hubo un error al consumir el servicio',
+            text: 'Hubo un error al consumir el servicio.',
           });
         },
         complete: () => {},
