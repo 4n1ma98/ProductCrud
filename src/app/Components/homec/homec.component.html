@@ -1,9 +1,13 @@
-<div class="box">
+<div class="box p-5">
   <div class="listc p-5">
-    <app-listc (update)="update = true"></app-listc>
+    <app-listc (update)="setUpdateData($event)"></app-listc>
   </div>
   <div class="actionc p-5">
     <app-registrationc *ngIf="!update"></app-registrationc>
-    <app-updatec *ngIf="update" (update)="update = false"></app-updatec>
+    <app-updatec
+      *ngIf="update"
+      (edit)="update = false"
+      [product]="product"
+    ></app-updatec>
   </div>
 </div>

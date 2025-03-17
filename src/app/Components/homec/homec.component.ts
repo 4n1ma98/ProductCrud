@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class HomecComponent {
   update: boolean = false;
+
+  product: any = {};
+
+  setUpdateData(event: any): void {
+    this.update = true;
+    this.product = event;
+  }
 }
