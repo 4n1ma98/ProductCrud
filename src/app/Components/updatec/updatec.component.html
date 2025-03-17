@@ -7,46 +7,162 @@
     <b>Actualización de Producto</b>
   </div>
   <div class="card-body">
-    <div class="m-3">
-      <label for="name">Nombre</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        value="{{ product.name }}"
-      />
-    </div>
-    <div class="m-3">
-      <label for="description">Descripción</label>
-      <textarea
-        class="form-control"
-        id="description"
-        rows="3"
-        value="{{ product.description }}"
-      ></textarea>
-    </div>
-    <div class="m-3">
-      <label for="price">Precio</label>
-      <input
-        type="text"
-        class="form-control"
-        id="price"
-        value="{{ product.price }}"
-      />
-    </div>
-    <div class="m-3">
-      <label for="stock">Stock</label>
-      <input
-        type="text"
-        class="form-control"
-        id="stock"
-        value="{{ product.stock }}"
-      />
-    </div>
-    <div class="m-3">
-      <button class="btn btn-warning w-100" (click)="update()">
-        Actualizar
-      </button>
-    </div>
+    <form [formGroup]="updateForm" (ngSubmit)="update()">
+      <div class="m-3">
+        <label for="name">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+        />
+        <!-- INICIO VALIDACIONES -->
+        <!-- Error si el campo está vacío -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('name')?.errors?.['required'] &&
+            updateForm.get('name')?.touched"
+        >
+          El nombre es obligatorio.
+        </span>
+        <!-- Error si el campo tiene menos caracteres de los requeridos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('name')?.errors?.['minlength'] &&
+            updateForm.get('name')?.touched"
+        >
+          El nombre debe tener al menos
+          {{ updateForm.get('name')?.errors?.['minlength'].requiredLength }}
+          caracteres.
+        </span>
+        <!-- Error si el campo tiene más caracteres de los permitidos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('name')?.errors?.['maxlength'] &&
+            updateForm.get('name')?.touched"
+        >
+          El nombre no puede tener más de
+          {{ updateForm.get('name')?.errors?.['maxlength'].requiredLength }}
+          caracteres.
+        </span>
+        <!-- FIN VALIDACIONES -->
+      </div>
+      <div class="m-3">
+        <label for="description">Descripción</label>
+        <textarea
+          class="form-control"
+          id="description"
+          rows="3"
+          formControlName="description"
+        ></textarea>
+        <!-- INICIO VALIDACIONES -->
+        <!-- Error si el campo está vacío -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('description')?.errors?.['required'] &&
+            updateForm.get('description')?.touched"
+        >
+          La descripción es obligatoria.
+        </span>
+        <!-- Error si el campo tiene menos caracteres de los requeridos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('description')?.errors?.['minlength'] &&
+            updateForm.get('description')?.touched"
+        >
+          La descripción debe tener al menos
+          {{ updateForm.get('description')?.errors?.['minlength'].requiredLength }}
+          caracteres.
+        </span>
+        <!-- Error si el campo tiene más caracteres de los permitidos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('description')?.errors?.['maxlength'] &&
+            updateForm.get('description')?.touched"
+        >
+          La descripción no puede tener más de
+          {{ updateForm.get('description')?.errors?.['maxlength'].requiredLength }}
+          caracteres.
+        </span>
+        <!-- FIN VALIDACIONES -->
+      </div>
+      <div class="m-3">
+        <label for="price">Precio</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          formControlName="price"
+        />
+        <!-- INICIO VALIDACIONES -->
+        <!-- Error si el campo está vacío -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('price')?.errors?.['required'] &&
+            updateForm.get('price')?.touched"
+        >
+          El precio es obligatorio.
+        </span>
+        <!-- Error si el campo tiene menos caracteres de los requeridos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('price')?.errors?.['min'] &&
+            updateForm.get('price')?.touched"
+        >
+          El precio no puede ser menos de
+          {{ updateForm.get('price')?.errors?.['min'].min }}.
+        </span>
+        <!-- Error si el campo tiene más caracteres de los permitidos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('price')?.errors?.['max'] &&
+            updateForm.get('price')?.touched"
+        >
+          El precio no puede ser más de
+          {{ updateForm.get('price')?.errors?.['max'].max }}.
+        </span>
+        <!-- FIN VALIDACIONES -->
+      </div>
+      <div class="m-3">
+        <label for="stock">Stock</label>
+        <input
+          type="number"
+          class="form-control"
+          id="stock"
+          formControlName="stock"
+        />
+        <!-- INICIO VALIDACIONES -->
+        <!-- Error si el campo está vacío -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('stock')?.errors?.['required'] &&
+            updateForm.get('stock')?.touched"
+        >
+          El stock es obligatorio.
+        </span>
+        <!-- Error si el campo tiene menos caracteres de los requeridos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('stock')?.errors?.['min'] &&
+            updateForm.get('stock')?.touched"
+        >
+          El stock no puede ser menos de
+          {{ updateForm.get('stock')?.errors?.['min'].min }}.
+        </span>
+        <!-- Error si el campo tiene más caracteres de los permitidos -->
+        <span
+          class="error"
+          *ngIf="updateForm.get('stock')?.errors?.['max'] &&
+            updateForm.get('stock')?.touched"
+        >
+          El stock no puede ser más de
+          {{ updateForm.get('stock')?.errors?.['max'].max }}.
+        </span>
+        <!-- FIN VALIDACIONES -->
+      </div>
+      <div class="m-3">
+        <button type="submit" class="btn btn-warning w-100">Actualizar</button>
+      </div>
+    </form>
   </div>
 </div>

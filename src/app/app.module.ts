@@ -8,6 +8,8 @@ import { ListcComponent } from './Components/listc/listc.component';
 import { RegistrationcComponent } from './Components/registrationc/registrationc.component';
 import { UpdatecComponent } from './Components/updatec/updatec.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +18,7 @@ import { UpdatecComponent } from './Components/updatec/updatec.component';
     RegistrationcComponent,
     UpdatecComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

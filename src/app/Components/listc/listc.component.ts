@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   styleUrl: './listc.component.css',
 })
 export class ListcComponent implements OnInit {
-  @Output() update = new EventEmitter<any>();
+  @Output() edit = new EventEmitter<any>();
 
   currentPage = 1;
   itemsPerPage = 5;
@@ -128,7 +128,7 @@ export class ListcComponent implements OnInit {
 
   emit(product: any): void {
     this.getProduct(product);
-    this.update.emit(this.product);
+    this.edit.emit(this.product);
   }
 
   delete(): void {
