@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { ServiceService } from '../../Services/service.service';
 
 @Component({
   selector: 'app-registrationc',
@@ -9,6 +10,8 @@ import Swal from 'sweetalert2';
   styleUrl: './registrationc.component.css',
 })
 export class RegistrationcComponent {
+  @Output() registered = new EventEmitter<any>();
+
   registerForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -34,14 +37,37 @@ export class RegistrationcComponent {
     ]),
   });
 
+  constructor(private service: ServiceService) {}
+
   register(): void {
     if (this.registerForm.valid) {
-      this.registerForm.reset();
+      const newProduct = {
+        name: this.registerForm.get('name')?.value,
+        description: this.registerForm.get('description')?.value,
+        price: this.registerForm.get('price')?.value,
+        stock: this.registerForm.get('stock')?.value,
+      };
 
-      Swal.fire({
-        title: 'Proceso exitoso!',
-        text: 'Se ha registrado el producto correctamente!',
-        icon: 'success',
+      this.service.createProduct(newProduct).subscribe({
+        next: (res: any[]) => {
+          this.registered.emit();
+
+          this.registerForm.reset();
+
+          Swal.fire({
+            title: 'Proceso exitoso!',
+            text: 'Se ha registrado el producto correctamente!',
+            icon: 'success',
+          });
+        },
+        error: (error: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Hubo un error al consumir el servicio',
+          });
+        },
+        complete: () => {},
       });
     } else {
       this.registerForm.markAllAsTouched();

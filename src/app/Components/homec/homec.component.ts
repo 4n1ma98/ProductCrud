@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ListcComponent } from '../listc/listc.component';
 
 @Component({
   selector: 'app-homec',
@@ -7,12 +8,16 @@ import { Component } from '@angular/core';
   styleUrl: './homec.component.css',
 })
 export class HomecComponent {
+  @ViewChild(ListcComponent) listc!: ListcComponent;
   update: boolean = false;
-
   product: any = {};
 
   setUpdateData(event: any): void {
     this.update = true;
     this.product = event;
+  }
+
+  updateProductList(): void {
+    this.listc.read();
   }
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { ServiceService } from '../../Services/service.service';
 
 @Component({
   selector: 'app-updatec',
@@ -9,10 +10,12 @@ import Swal from 'sweetalert2';
   styleUrl: './updatec.component.css',
 })
 export class UpdatecComponent {
+  @Output() updated = new EventEmitter<any>();
   @Output() create = new EventEmitter<any>();
   @Input() product: any = {};
 
   updateForm = new FormGroup({
+    id: new FormControl('', [Validators.required]),
     name: new FormControl({ value: '', disabled: true }, [
       Validators.required,
       Validators.minLength(3),
@@ -37,6 +40,8 @@ export class UpdatecComponent {
     ]),
   });
 
+  constructor(private service: ServiceService) {}
+
   ngOnChanges(): void {
     this.updateForm.patchValue(this.product);
   }
@@ -53,12 +58,32 @@ export class UpdatecComponent {
         confirmButtonText: 'Sí, actualizar!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.create.emit();
+          const product = {
+            id: this.updateForm.get('id')?.value,
+            price: this.updateForm.get('price')?.value,
+            stock: this.updateForm.get('stock')?.value,
+          };
 
-          Swal.fire({
-            title: 'Proceso exitoso!',
-            text: 'Se ha actualizado el producto correctamente!',
-            icon: 'success',
+          this.service.updateProduct(product).subscribe({
+            next: (res: any[]) => {
+              this.updated.emit();
+
+              this.create.emit();
+
+              Swal.fire({
+                title: 'Proceso exitoso!',
+                text: 'Se ha actualizado el producto correctamente!',
+                icon: 'success',
+              });
+            },
+            error: (error: any) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Hubo un error al consumir el servicio',
+              });
+            },
+            complete: () => {},
           });
         }
       });

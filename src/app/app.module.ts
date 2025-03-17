@@ -9,6 +9,7 @@ import { RegistrationcComponent } from './Components/registrationc/registrationc
 import { UpdatecComponent } from './Components/updatec/updatec.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     UpdatecComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

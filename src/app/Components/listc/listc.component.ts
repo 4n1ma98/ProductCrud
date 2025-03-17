@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import Swal from 'sweetalert2';
+import { ServiceService } from '../../Services/service.service';
 
 @Component({
   selector: 'app-listc',
@@ -9,100 +10,32 @@ import Swal from 'sweetalert2';
 })
 export class ListcComponent implements OnInit {
   @Output() edit = new EventEmitter<any>();
+  @Output() deleted = new EventEmitter<any>();
 
   currentPage = 1;
   itemsPerPage = 5;
   totalPages: number[] = [];
   product: any = {};
-  products: Array<any> = [
-    {
-      id: 1,
-      name: 'Manzana01',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 2,
-      name: 'Manzana02',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 3,
-      name: 'Manzana03',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 4,
-      name: 'Manzana04',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 5,
-      name: 'Manzana05',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 6,
-      name: 'Manzana06',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 7,
-      name: 'Manzana07',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 8,
-      name: 'Manzana08',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 9,
-      name: 'Manzana09',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 10,
-      name: 'Manzana10',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-    {
-      id: 11,
-      name: 'Manzana11',
-      description: 'description',
-      price: 2000,
-      stock: 100,
-    },
-  ];
-  originalList: Array<any> = this.products;
+  products: Array<any> = [];
+  originalList: Array<any> = [];
 
   get newProducts() {
     const inicio = (this.currentPage - 1) * this.itemsPerPage;
     const fin = inicio + this.itemsPerPage;
     return this.products.slice(inicio, fin);
   }
+  constructor(private service: ServiceService) {}
 
   ngOnInit() {
-    this.calculatePages();
+    this.read();
+  }
+
+  read(): void {
+    this.service.readProducts().subscribe((products) => {
+      this.products = products.additionalData;
+      this.originalList = this.products;
+      this.calculatePages();
+    });
   }
 
   calculatePages() {
@@ -131,7 +64,7 @@ export class ListcComponent implements OnInit {
     this.edit.emit(this.product);
   }
 
-  delete(): void {
+  delete(id: number): void {
     Swal.fire({
       title: 'Eliminar producto?',
       text: 'Si confirmas esta acción el producto se eliminará!',
@@ -142,10 +75,24 @@ export class ListcComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar!',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Proceso exitoso!',
-          text: 'Se ha eliminado el producto correctamente!',
-          icon: 'success',
+        this.service.deleteProduct(id).subscribe({
+          next: (res: any[]) => {
+            this.deleted.emit();
+
+            Swal.fire({
+              title: 'Proceso exitoso!',
+              text: 'Se ha eliminado el producto correctamente!',
+              icon: 'success',
+            });
+          },
+          error: (error: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Hubo un error al consumir el servicio',
+            });
+          },
+          complete: () => {},
         });
       }
     });
